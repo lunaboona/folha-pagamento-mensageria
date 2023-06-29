@@ -64,7 +64,7 @@ public class ItemController : ControllerBase
   [HttpGet(Name = "total")]
   public IActionResult GetTotal()
   {
-    var folhas = GetAll();
+    var folhas = GetAll().ToList();
     var total = new TotalDto
     {
       Total = folhas
@@ -78,10 +78,10 @@ public class ItemController : ControllerBase
   [HttpGet(Name = "media")]
   public IActionResult GetMedia()
   {
-    var folhas = GetAll();
-    var total = new TotalDto
+    var folhas = GetAll().ToList();
+    var media = new TotalDto
     {
-      Quantidade = folhas.Count(),
+      Quantidade = folhas.Count,
       Total = folhas
         .Select(folha => folha.Liquido)
         .Sum(),
@@ -89,6 +89,6 @@ public class ItemController : ControllerBase
         .Select(folha => folha.Liquido)
         .Average()
     };
-    return Ok(total);
+    return Ok(media);
   }
 }
