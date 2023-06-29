@@ -60,4 +60,17 @@ public class ItemController : ControllerBase
       return BadRequest();
     }
   }
+  
+  [HttpGet(Name = "total")]
+  public IActionResult GetTotal()
+  {
+    var folhas = GetAll();
+    var total = new TotalDto
+    {
+      Total = folhas
+        .Select(folha => folha.Liquido)
+        .Sum()
+    };
+    return Ok(total);
+  }
 }

@@ -1,5 +1,4 @@
 using System.Text;
-using ProjetoBApi.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProjetoBApi.Models;
