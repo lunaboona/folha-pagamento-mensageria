@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace ProjetoBApi.Models;
 
 public class FolhaCalculada
@@ -13,4 +15,19 @@ public class FolhaCalculada
   public double? Fgts { get; set; }
   public double? Liquido { get; set; }
   public string? Funcionario { get; set; }
+
+  public static FolhaCalculada fromDTO(FolhaCalculadaDTO dto) {
+    var folha = new FolhaCalculada();
+    folha.Mes = dto.Mes;
+    folha.Ano = dto.Ano;
+    folha.Horas = dto.Horas;
+    folha.Valor = dto.Valor;
+    folha.Bruto = dto.Bruto;
+    folha.Irrf = dto.Irrf;
+    folha.Inss = dto.Inss;
+    folha.Fgts = dto.Fgts;
+    folha.Liquido = dto.Liquido;
+    folha.Funcionario = JsonConvert.SerializeObject(dto.Funcionario);
+    return folha;
+  }
 }
