@@ -2,25 +2,25 @@ using Microsoft.AspNetCore.Mvc;
 using ProjetoBApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LojaApi.Controllers;
+namespace ProjetoBApi.Controllers;
 
 [ApiController]
-[Route("/folha")]
-public class ItemController : ControllerBase
+[Route("folha")]
+public class FolhaController : ControllerBase
 {
-  private readonly ILogger<ItemController> _logger;
+  private readonly ILogger<FolhaController> _logger;
   private readonly FolhaContext _context;
 
-  public ItemController(ILogger<ItemController> logger, FolhaContext context)
+  public FolhaController(ILogger<FolhaController> logger, FolhaContext context)
   {
     _logger = logger;
     _context = context;
   }
 
-  [HttpGet(Name = "GetAllFolhas")]
-  public IEnumerable<FolhaCalculada> GetAll()
+  [HttpGet("listar")]
+  public IEnumerable<FolhaCalculadaDTO> GetAll()
   {
-    return _context.Folhas;
+    return _context.Folhas.Select(x => x.toDTO());
   }
 
   [HttpGet("{id}", Name = "GetOneFolha")]
@@ -42,17 +42,18 @@ public class ItemController : ControllerBase
       return NotFound();
     }
 
-    return Ok(folha);
+    return Ok(folha.toDTO());
   }
 
   [HttpPost(Name = "CreateFolha")]
-  public async Task<IActionResult> CreateAsync(FolhaCalculada folha)
+  public async Task<IActionResult> CreateAsync(FolhaCalculadaDTO dto)
   {
     try
     {
+      var folha = FolhaCalculada.fromDTO(dto);
       _context.Folhas.Add(folha);
       await _context.SaveChangesAsync();
-      return CreatedAtAction("GetOne", new { id = folha.Id }, folha);
+      return CreatedAtAction("GetOne", new { id = folha.Id }, dto);
     }
     catch (Exception e)
     {
@@ -61,7 +62,7 @@ public class ItemController : ControllerBase
     }
   }
   
-  [HttpGet(Name = "total")]
+  [HttpGet("total")]
   public IActionResult GetTotal()
   {
     var folhas = GetAll();

@@ -30,4 +30,19 @@ public class FolhaCalculada
     folha.Funcionario = JsonConvert.SerializeObject(dto.Funcionario);
     return folha;
   }
+
+  public FolhaCalculadaDTO toDTO() {
+    var dto = new FolhaCalculadaDTO();
+    dto.Mes = this.Mes;
+    dto.Ano = this.Ano;
+    dto.Horas = this.Horas;
+    dto.Valor = this.Valor;
+    dto.Bruto = this.Bruto;
+    dto.Irrf = this.Irrf;
+    dto.Inss = this.Inss;
+    dto.Fgts = this.Fgts;
+    dto.Liquido = this.Liquido;
+    dto.Funcionario = JsonConvert.DeserializeObject<Funcionario>(this.Funcionario);
+    return dto;
+  }
 }
