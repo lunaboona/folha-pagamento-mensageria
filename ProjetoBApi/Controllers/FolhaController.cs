@@ -22,45 +22,6 @@ public class FolhaController : ControllerBase
   {
     return _context.Folhas.Select(x => x.toDTO());
   }
-
-  [HttpGet("{id}", Name = "GetOneFolha")]
-  public async Task<IActionResult> GetOneAsync(long id)
-  {
-    FolhaCalculada? folha;
-    try
-    {
-      folha = await _context.Folhas.FindAsync(id);
-    }
-    catch (Exception e)
-    {
-      _logger.LogError(e.Message);
-      return BadRequest();
-    }
-
-    if (folha == null)
-    {
-      return NotFound();
-    }
-
-    return Ok(folha.toDTO());
-  }
-
-  [HttpPost(Name = "CreateFolha")]
-  public async Task<IActionResult> CreateAsync(FolhaCalculadaDTO dto)
-  {
-    try
-    {
-      var folha = FolhaCalculada.fromDTO(dto);
-      _context.Folhas.Add(folha);
-      await _context.SaveChangesAsync();
-      return CreatedAtAction("GetOne", new { id = folha.Id }, dto);
-    }
-    catch (Exception e)
-    {
-      _logger.LogError(e.Message);
-      return BadRequest();
-    }
-  }
   
   [HttpGet("total")]
   public IActionResult GetTotal()
@@ -76,7 +37,7 @@ public class FolhaController : ControllerBase
   }
   
   
-  [HttpGet(Name = "media")]
+  [HttpGet("media")]
   public IActionResult GetMedia()
   {
     var folhas = GetAll().ToList();
