@@ -73,4 +73,22 @@ public class ItemController : ControllerBase
     };
     return Ok(total);
   }
+  
+  
+  [HttpGet(Name = "media")]
+  public IActionResult GetMedia()
+  {
+    var folhas = GetAll();
+    var total = new TotalDto
+    {
+      Quantidade = folhas.Count(),
+      Total = folhas
+        .Select(folha => folha.Liquido)
+        .Sum(),
+      Media = folhas
+        .Select(folha => folha.Liquido)
+        .Average()
+    };
+    return Ok(total);
+  }
 }
